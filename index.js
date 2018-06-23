@@ -479,7 +479,7 @@ function getUrlParameter(name,part) {
 
 (function() {
 
-    var jsfile=getUrlParameter('data');
+    var jsfile=getUrlParameter('settings');
     loadScripts([jsfile], function() {
         var id=getUrlParameter('id');
         if (id) {

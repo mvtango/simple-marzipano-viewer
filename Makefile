@@ -7,5 +7,5 @@ server:
 	python3 -m http.server $(PORT) 
 
 demo:
-	xdg-open 'http://localhost:$(PORT)/?data=demo.js&id=20170811_154249#-12:20:36'
+	xdg-open 'http://localhost:$(PORT)/?settings=demo.js&id=20170811_154249#-12:20:36'
 
