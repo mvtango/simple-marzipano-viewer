@@ -191,7 +191,7 @@ function run_marzipano(APP_DATA) {
   }
 
   function parseView(vstr) {
-      var view = vstr.split(":");
+      var view = decodeURIComponent(vstr).split(":");
       var degrad=Math.PI/180;
       var ttime=1000;
       var np = null ;
@@ -200,7 +200,7 @@ function run_marzipano(APP_DATA) {
                 pitch : parseInt(view[1])*degrad,
                 fov : parseInt(view[2])*degrad };
       }
-      if (view.length == 4) {
+      if (view.length > 3) {
            ttime=parseInt(view[3]);
         } 
       return([np,ttime]);

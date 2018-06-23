@@ -15,7 +15,7 @@ URL Query Parameters:
 
 URL Hash parameters:
 
-    `#-12:20:10` - yaw (horizontal) : pitch (vertical) : field-of-view  in degrees
+    `#-12:20:10:1000` - yaw (horizontal) : pitch (vertical) : field-of-view  (all in degrees) : transition time (milliseconds)
 
 
 

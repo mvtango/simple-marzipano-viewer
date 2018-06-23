@@ -38,6 +38,6 @@ var APP_DATA = {
     "autorotateEnabled": false,
     "fullscreenButton": true,
     "viewControlButtons": true,
-    "pathPrefix": "tiles/"
+    "pathPrefix": "../tiles/"
   }
 };
