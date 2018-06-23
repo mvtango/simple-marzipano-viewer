@@ -9,3 +9,9 @@ server:
 demo:
 	xdg-open 'http://localhost:$(PORT)/?settings=demo.js&id=20170811_154249#-12:20:36'
 
+
+
+#
+source/tiles/% : source/images/%.jpg
+        krpanotools makepano -config=contrib/krpano-to-marzipano.config  $<
+
