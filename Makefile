@@ -13,5 +13,5 @@ demo:
 
 #
 source/tiles/% : source/images/%.jpg
-        krpanotools makepano -config=contrib/krpano-to-marzipano.config  $<
+	krpanotools makepano -config=contrib/krpano-to-marzipano.config  $<
 

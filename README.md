@@ -15,8 +15,9 @@ URL Query Parameters:
 
 URL Hash parameters:
 
-    `#-12:20:10:1000` - yaw (horizontal) : pitch (vertical) : field-of-view  (all in degrees) : transition time (milliseconds)
+    `-12:20:10:1000` - yaw (direction on horizontal plane) : pitch (vertical elevation) : field-of-view  (all in degrees) : transition time (milliseconds)
 
+Several of these coordinates can be concatenated with `;` - this makes the viewer pan / zoom from one to another.
 
 
 ## How to prepare the images

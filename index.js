@@ -53,17 +53,22 @@ function run_marzipano(APP_DATA) {
   };
 
   // getg initial view from # 
-  var p=parseView(location.hash.substr(1));
-
-  if (p[0]) {
-      // console.log("old initial:" + JSON.stringify(APP_DATA.scenes[0].initialViewParameters));
-      // console.log("setting initial view "+JSON.stringify(p[0]));
-      APP_DATA.scenes[0].initialViewParameters=p[0];
+  if (location.hash.length > 2) {
+    var views=parseViews(location.hash.substr(1));
+    // Initialize viewer.
+  } else {
+    var views=[]
   }
 
-
-  // Initialize viewer.
   var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
+
+
+  if ((views.length>0) && (views[0].length>0)) {
+      // console.log("old initial:" + JSON.stringify(APP_DATA.scenes[0].initialViewParameters));
+      // console.log("setting initial view "+JSON.stringify(p[0]));
+      APP_DATA.scenes[0].initialViewParameters=views[0][0];
+  }
+
 
   // Setup autorotate.
   var autorotate = Marzipano.autorotate({ yawSpeed: 0.1, targetPitch: 0, targetFov: Math.PI/2 });
@@ -206,11 +211,33 @@ function run_marzipano(APP_DATA) {
       return([np,ttime]);
    }
 
+  function parseViews(vstr) {
+    var views=decodeURIComponent(vstr).split(";");
+    var vs=[];
+
+    views.forEach(function(e) {
+        vs.push(parseView(e))
+    });
+    return vs
+ }
+
+
 
   function setCurrentView(viewer,pos) {
       var sc = viewer.scene();
-      var par=parseView(pos);
-      sc.lookTo(par[0],{transitionDuration: par[1]});
+      var vs;
+      if (typeof pos === typeof '') {
+        vs=parseViews(pos);
+      } else {
+        vs=pos
+      }
+      var ct=0;
+      vs.forEach(function(par) {
+        setTimeout(function() {
+            sc.lookTo(par[0],{transitionDuration: par[1]});
+        },ct);
+        ct = ct + par[1];
+     });
   }
 
   window.setCurrentView=setCurrentView;
@@ -436,6 +463,9 @@ function run_marzipano(APP_DATA) {
     return null;
   }
 
+  if (views.length > 1) {
+    setCurrentView(viewer,views)
+  }
   return viewer;
 
 };
