@@ -1,0 +1,103 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js" integrity="sha256-qwbDmNVLiCqkqRBpF46q5bjYH11j5cd+K+Y6D3/ja28=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js" integrity="sha256-lrZTgsdM1iVdRigETFOU8u8/BmLX1ysQ8bzrULbuVFU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+<style>
+
+a:visited { 
+    color: black;
+}
+
+a:link { 
+    color: black;
+}
+
+
+a:hover {
+    color: red;
+}
+
+.highlight {
+    background-color: #e0e000;
+}
+
+.sidebar {
+    width: 300px;
+    height: 500px;
+    overflow: auto;
+    float: left;
+    margin-right: 10px;
+}
+
+.main {
+    float: left;
+    width: 850px;
+
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+ <a href="/pano/?settings=view.js&id=20170813_201914#-107%3a6%3a62" target="viewer">A</a>
+ <a href="/pano/?settings=view.js&id=20170813_201914#-137%3a6%3a62" target="viewer">B</a>
+</div>
+<div class="main">
+<h2><input type="text" id="title" style="width: 600px" ><button onClick="$('#viewer').attr('src',$('#title').val());do_reload();">Go</button></h2>
+<p style="font-size: small"Format: <i>yaw:pitch:fov:time</i>, separated by ;. Last parameter is Autorotate <i>yawspeed:targetpitch:targetpov:idletime</i> </p>
+<iframe id="viewer" name="viewer" scrolling="no" style="width:800; border: 0px; height: 450px;" allowfullscreen="" 
+src="/pano/?settings=view.js&id=20170813_201914#-157%3a6%3a62"></iframe>
+<p><b>n</b>ext or <b>p</b>rev</p>
+</div>
+<script>
+
+function highlight(el,s) {
+    $("#title").val($(el).attr('href'));
+    $(".sidebar li").removeClass("highlight");
+    $(el).parent('li').addClass("highlight");
+}
+
+function do_reload() {
+    var $e=$("#viewer");
+    var u=$e.attr("src");
+
+    u=u.replace(/\?(r=[0-9.]+&)?/,"?r="+Math.random()+"&");
+    $e.attr("src",u);
+}
+
+var tmpl = _.template('<ul><% _.forEach(images, function(i) { %><li><a target="viewer" onClick="highlight(this,&quot;<%= i.title %> <%= i.id %> <%= i.pos %>&quot;)" href="./index.html?settings=demo.js&id=<%= i.id %>#<%= i.pos %>"><%= i.id %> <%= i.title %></a></li><% }); %></ul>');
+
+
+
+axios.get("demo.json").then(function(r) {
+    $(".sidebar").html(tmpl(r.data));
+    select($(".sidebar li a"));
+});
+
+
+function select(e) {
+    e[0].click();
+}
+
+
+hotkeys('n',function(event,handler) {
+    var $e=$(".sidebar li.highlight");
+    if (typeof $e.next() != "undefined" ) {
+        select($e.next().find('a'));
+        $e[0].scrollIntoView();
+    }
+});
+
+hotkeys('p',function(event,handler) {
+    var $e=$(".sidebar li.highlight");
+    if (typeof $e.prev() != "undefined" ) {
+        select($e.prev().find('a'));
+        $e[0].scrollintoView();
+    }
+});
+
+
+</script>
+</body>
+</html>
