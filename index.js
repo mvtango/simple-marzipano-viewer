@@ -71,9 +71,17 @@ function run_marzipano(APP_DATA) {
 
 
   // Setup autorotate.
-  var autorotate = Marzipano.autorotate({ yawSpeed: 0.1, targetPitch: 0, targetFov: Math.PI/2 });
-  if (APP_DATA.settings.autorotateEnabled) {
-    autorotateToggleElement.classList.add('enabled');
+  if (views.length>1) {
+      var autoValues = views[views.length-1];
+      console.log("Setting Autorotate",autoValues);
+      var autorotate = Marzipano.autorotate({ yawSpeed: autoValues[0].yaw, targetPitch: autoValues[0].pitch, targetFov: autoValues[0].fov });
+      autorotateToggleElement.classList.add('enabled');
+      viewer.setIdleMovement(autorotate,autoValues[1]);
+  } else {
+      var autorotate = Marzipano.autorotate({ yawSpeed: 0.1, targetPitch: 0, targetFov: Math.PI/2 });
+      if (APP_DATA.settings.autorotateEnabled) {
+        autorotateToggleElement.classList.add('enabled');
+      }
   }
 
   // Create scenes.
@@ -232,11 +240,13 @@ function run_marzipano(APP_DATA) {
         vs=pos
       }
       var ct=0;
-      vs.forEach(function(par) {
-        setTimeout(function() {
-            sc.lookTo(par[0],{transitionDuration: par[1]});
-        },ct);
-        ct = ct + par[1];
+      vs.forEach(function(par, index, arr) {
+        if (index<arr.length-1) {
+            setTimeout(function() {
+                sc.lookTo(par[0],{transitionDuration: par[1]});
+            },ct);
+            ct = ct + par[1];
+        }
      });
   }
 
