@@ -73,7 +73,7 @@ function run_marzipano(APP_DATA) {
   // Setup autorotate.
   if (views.length>1) {
       var autoValues = views[views.length-1];
-      console.log("Setting Autorotate",autoValues);
+      // console.log("Setting Autorotate",autoValues);
       var autorotate = Marzipano.autorotate({ yawSpeed: autoValues[0].yaw, targetPitch: autoValues[0].pitch, targetFov: autoValues[0].fov });
       autorotateToggleElement.classList.add('enabled');
       viewer.setIdleMovement(autorotate,autoValues[1]);
